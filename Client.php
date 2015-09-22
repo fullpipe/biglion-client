@@ -77,7 +77,7 @@ class Client
     private $apiKey;
 
     /**
-     * @var \Guzzle\Http\ClientInterface
+     * @var \GuzzleHttp\Client
      */
     private $guzzleClient;
 
@@ -175,9 +175,9 @@ class Client
      *
      * @param string $couponNumber
      *
-     * @return array
-     *
      * @throws \Fullpipe\Biglion\BiglionException on request error
+     *
+     * @return array
      */
     public function getCouponInfo($couponNumber)
     {
@@ -197,9 +197,9 @@ class Client
      * @param string $couponNumber
      * @param string $pincode
      *
-     * @return array
-     *
      * @throws \Fullpipe\Biglion\BiglionException on request error
+     *
+     * @return array
      */
     public function redeemCoupon($couponNumber, $pincode)
     {
@@ -223,9 +223,9 @@ class Client
      * @param string $couponNumber
      * @param string $reserveCode
      *
-     * @return array
-     *
      * @throws \Fullpipe\Biglion\BiglionException on request error
+     *
+     * @return array
      */
     public function reserveCoupon($couponNumber, $reserveCode)
     {
@@ -248,17 +248,17 @@ class Client
      *
      * @param array $queryParams
      *
-     * @return array
-     *
      * @throws \Fullpipe\Biglion\BiglionException on request error
+     *
+     * @return array
      */
     private function doRequest(array $queryParams = array())
     {
-        $request = $this->getGuzzleClient()->get('', array(), array(
+        $response = $this->getGuzzleClient()->get('', array(), array(
             'query' => array_merge($queryParams, array('type' => 'json')),
         ));
 
-        $result = $request->send()->json();
+        $result = json_decode($response->getBody(), true);
         $result = $result['result'];
 
         if ($result['error'] != 0) {
@@ -271,12 +271,15 @@ class Client
     /**
      * Get Guzzle http client.
      *
-     * @return \Guzzle\Http\ClientInterface
+     * @return \GuzzleHttp\Client
      */
     public function getGuzzleClient()
     {
         if (null === $this->guzzleClient) {
-            $this->guzzleClient = new \Guzzle\Http\Client(self::BASE_URL);
+            $this->guzzleClient = new \GuzzleHttp\Client(array(
+                'base_uri' => self::BASE_URL,
+                'timeout' => 5,
+            ));
         }
 
         return $this->guzzleClient;
@@ -285,9 +288,9 @@ class Client
     /**
      * Set Guzzle http client.
      *
-     * @param \Guzzle\Http\ClientInterface $guzzleClient
+     * @param \GuzzleHttp\Client $guzzleClient
      */
-    public function setGuzzleClient(\Guzzle\Http\ClientInterface $guzzleClient)
+    public function setGuzzleClient(\GuzzleHttp\Client $guzzleClient)
     {
         $this->guzzleClient = $guzzleClient;
     }
