@@ -10,7 +10,7 @@ class Client
     /**
      * Base api url.
      */
-    const BASE_URL = 'http://api.biglion.ru/api.php';
+    const BASE_URL = 'http://api.biglion.ru';
 
     /**
      * Api vertion.
