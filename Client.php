@@ -10,7 +10,7 @@ class Client
     /**
      * Base api url.
      */
-    const BASE_URL = 'http://api.biglion.ru';
+    const BASE_URL = 'http://api.biglion.ru/api.php';
 
     /**
      * Api vertion.
@@ -254,8 +254,7 @@ class Client
      */
     private function doRequest(array $queryParams = array())
     {
-        $query = array_merge($queryParams, array('type' => 'json'));
-        $response = $this->getGuzzleClient()->request('GET', '/api.php', ['query' => $query]);
+        $response = $this->getGuzzleClient()->get('', ['query' => array_merge($queryParams, ['type' => 'json'])]);
 
         $result = json_decode($response->getBody(), true);
         $result = $result['result'];
