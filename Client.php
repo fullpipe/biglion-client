@@ -254,9 +254,7 @@ class Client
      */
     private function doRequest(array $queryParams = array())
     {
-        $response = $this->getGuzzleClient()->get('', array(), array(
-            'query' => array_merge($queryParams, array('type' => 'json')),
-        ));
+        $response = $this->getGuzzleClient()->get('', ['query' => array_merge($queryParams, ['type' => 'json'])]);
 
         $result = json_decode($response->getBody(), true);
         $result = $result['result'];
