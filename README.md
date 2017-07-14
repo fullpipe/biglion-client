@@ -2,7 +2,7 @@
 
 ## Usage
 ```php
-$bc = new \Fullpipe\Biglion\Client('email@example.com', 'pa$$word');
+$bc = new \Fullpipe\Biglion\Client('email@example.com', 'password');
 
 try {
     var_dump($bc->getCouponInfo('012345-0000-0001'));
@@ -27,4 +27,10 @@ try {
 } catch (\Fullpipe\Biglion\BiglionException $e) {
     echo $e->getMessage();
 }
+```
+
+## Test
+```
+composer install --dev
+BIGLION_EMAIL=email@example.com BIGLION_PASSWORD=password vendor/bin/phpunit
 ```
